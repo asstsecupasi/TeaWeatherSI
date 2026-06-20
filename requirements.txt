@@ -1,0 +1,9 @@
+dash
+plotly
+pandas
+geopandas
+numpy
+sqlalchemy
+psycopg2-binary
+openpyxl
+gunicorn
