@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kerala Tea &amp; Weather Atlas · UPASI</title>
+<meta name="description" content="Interactive animated choropleth of tea production and weather patterns across Kerala's districts, 2015–2024.">
+
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16 3C9 7 6 13 8 20c1.5 5 6 8 8 9 2-1 6.5-4 8-9 2-7-1-13-8-17Z" />
+      <path d="M16 9v18" class="vein" />
+      <path d="M16 14c-2.5-1.5-4.5-1-5.5 0M16 19c-3-1.7-5-1-6 .3M16 14c2.5-1.5 4.5-1 5.5 0M16 19c3-1.7 5-1 6 .3" class="vein" />
+    </svg>
+    <div class="brand-text">
+      <h1>Kerala Tea &amp; Weather Atlas</h1>
+      <p>United Planters' Association of Southern India &middot; 2015–2024 monthly record</p>
+    </div>
+  </div>
+  <button id="toggleDisclaimer" class="ghost-btn" type="button" aria-expanded="true" aria-controls="disclaimerBanner">
+    Data notice
+  </button>
+</header>
+
+<div id="disclaimerBanner" class="disclaimer">
+  <p>
+    <strong>Wayanad</strong> carries the only measured production and weather series in the source workbook (2015–2024, monthly).
+    Figures shown for <strong>Idukki, Palakkad, Kollam, Thiruvananthapuram, Thrissur and Malappuram</strong> are
+    <strong>illustrative demo estimates</strong> &mdash; scaled from Wayanad's real data using Tea Board of India district
+    acreage shares and broad agro-climatic offsets. They are <em>not</em> measured values and must not inform operational
+    or policy decisions. The remaining seven Kerala districts grow no tea and are shown with no data.
+  </p>
+  <button id="dismissDisclaimer" class="text-btn" type="button">Dismiss</button>
+</div>
+
+<main class="layout">
+
+  <aside class="panel controls" aria-label="Filters">
+    <section class="control-group">
+      <label class="control-label" for="metricSelect">Metric</label>
+      <select id="metricSelect"></select>
+      <p id="metricUnit" class="hint"></p>
+    </section>
+
+    <section class="control-group">
+      <span class="control-label">Legend</span>
+      <div id="legend" class="legend" aria-live="polite"></div>
+    </section>
+
+    <section class="control-group">
+      <label class="control-label" for="demoToggle">
+        <input type="checkbox" id="demoToggle" checked>
+        Show demo districts
+      </label>
+      <p class="hint">Untick to isolate Wayanad's real measured data.</p>
+    </section>
+
+    <section class="control-group">
+      <span class="control-label">Tea districts (acreage share)</span>
+      <ul id="districtList" class="district-list"></ul>
+    </section>
+  </aside>
+
+  <section class="map-stage" aria-label="Choropleth map">
+    <div id="map"></div>
+    <div id="mapTooltip" class="map-tooltip" hidden></div>
+  </section>
+
+  <aside class="panel detail" aria-label="District detail">
+    <div class="detail-head">
+      <h2 id="detailDistrict">Wayanad</h2>
+      <span id="detailBadge" class="badge"></span>
+    </div>
+    <div class="stat-grid" id="statGrid"></div>
+    <div class="chart-wrap">
+      <canvas id="trendChart" height="180"></canvas>
+    </div>
+    <p class="hint">Click any district on the map to inspect its full 2015–2024 series.</p>
+  </aside>
+
+</main>
+
+<footer class="timeline-bar" aria-label="Time controls">
+  <button id="playBtn" class="play-btn" type="button" aria-label="Play">
+    <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
+    <svg viewBox="0 0 24 24" id="pauseIcon" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+  </button>
+
+  <div class="timeline-track-wrap">
+    <div class="timeline-readout">
+      <span id="monthLabel">January 2015</span>
+      <span class="scroll-hint">scroll to step &middot; drag to scrub</span>
+    </div>
+    <input type="range" id="timeline" min="0" max="119" value="0" step="1" aria-label="Month">
+    <div class="year-ticks" id="yearTicks"></div>
+  </div>
+
+  <div class="speed-group">
+    <label for="speedSelect" class="control-label small">Speed</label>
+    <select id="speedSelect">
+      <option value="900">Slow</option>
+      <option value="450" selected>Normal</option>
+      <option value="180">Fast</option>
+    </select>
+  </div>
+</footer>
+
+<script src="assets/vendor/leaflet/leaflet.js"></script>
+<script src="assets/vendor/chartjs/chart.umd.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

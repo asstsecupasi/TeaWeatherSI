@@ -1,0 +1,24 @@
+# Render.com Blueprint — deploy as a static site.
+# Push this repo to GitHub/GitLab, then in Render: New > Blueprint > select this repo.
+# Render auto-detects this file. No backend/server process is required.
+services:
+  - type: web
+    name: kerala-tea-weather-atlas
+    runtime: static
+    buildCommand: "echo 'Static site — no build step required'"
+    staticPublishPath: .
+    autoDeployTrigger: commit
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /data/*
+        name: Cache-Control
+        value: public, max-age=3600
